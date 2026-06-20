@@ -6,6 +6,8 @@ use App\Models\Grade;
 use App\Http\Requests\StoreGradeRequest;
 use App\Http\Requests\UpdateGradeRequest;
 use App\Models\Enrollment;
+use App\Support\GradeScale;
+use Illuminate\Support\Facades\DB;
 
 class GradeController extends Controller
 {
@@ -29,26 +31,17 @@ class GradeController extends Controller
     {
         $validated = $request->validated();
 
-        // Corrected status logic
-        if ($validated['grade'] === 'INC') {
-            $status = 'Incomplete';
-        } elseif ($validated['grade'] === 'FDA'){
-            $status = 'Failure Due to Absences';
-        } elseif ($validated['grade'] > 3) {
-            $status = 'Failed';
-        } elseif ($validated['grade'] >= 1 && $validated['grade'] <= 3) {
-            $status = 'Passed';
-        }
+        DB::transaction(function () use ($validated) {
+            $enrollment = Enrollment::lockForUpdate()->findOrFail($validated['enrollment_id']);
 
-        // Create grade entry
-        $grade = Grade::create([
-            'grade' => $validated['grade'],
-            'status' => $status,
-        ]);
+            $grade = $enrollment->grade ?: new Grade();
+            $grade->fill([
+                'grade' => $validated['grade'],
+                'status' => GradeScale::statusFor($validated['grade']),
+            ])->save();
 
-        // Update enrollment with grade_id
-        Enrollment::where('id', $validated['enrollment_id'])
-            ->update(['grade_id' => $grade->id]);
+            $enrollment->update(['grade_id' => $grade->id]);
+        });
 
         return redirect('students')->with('success', 'Student graded successfully');
     }
@@ -58,7 +51,10 @@ class GradeController extends Controller
      */
     public function show($studentId)
     {
-        $grades = Grade::where('student_id', $studentId)->with('subject')->get();
+        $grades = Grade::query()
+            ->whereHas('enrollment', fn ($query) => $query->where('student_id', $studentId))
+            ->with(['enrollment.subject'])
+            ->get();
 
         return response()->json($grades);
     }
@@ -77,17 +73,7 @@ class GradeController extends Controller
     public function update(UpdateGradeRequest $request, Grade $grade)
     {
         $validated = $request->validated();
-
-        // Corrected status logic
-        if ($validated['grade'] === 'INC') {
-            $validated['status'] = 'Incomplete';
-        } elseif ($validated['grade'] === 'FDA') {
-            $validated['status'] = 'Failure Due to Absences';
-        } elseif ($validated['grade'] > 3) {
-            $validated['status'] = 'Failed';
-        } elseif ($validated['grade'] >= 1 && $validated['grade'] <= 3) {
-            $validated['status'] = 'Passed';
-        }
+        $validated['status'] = GradeScale::statusFor($validated['grade']);
 
         $grade->update($validated);
 
@@ -99,8 +85,10 @@ class GradeController extends Controller
      */
     public function destroy(Grade $grade)
     {
-        Enrollment::where('grade_id', $grade->id)->update(['grade_id' => null]);
-        $grade->delete();
+        DB::transaction(function () use ($grade) {
+            Enrollment::where('grade_id', $grade->id)->update(['grade_id' => null]);
+            $grade->delete();
+        });
 
         return redirect('students')->with('success', 'Student grade deleted successfully');
     }

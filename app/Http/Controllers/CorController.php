@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\BillingRecord;
 use App\Models\Enrollment;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Student;
+use App\Services\CorPdfGenerator;
 use Illuminate\Http\Request;
 
 class CorController extends Controller
 {
-    public function download(Request $request)
+    public function download(Request $request, ?Student $student = null)
     {
-        $student = auth('student')->user();
+        $student ??= auth('student')->user();
+        abort_unless($student, 403);
+
         $schoolYear = $request->get('school_year', '2025-2026');
         $semester = $request->get('semester', '1st Semester');
 
@@ -80,7 +83,7 @@ class CorController extends Controller
         $courseYear = trim(($student->course ?? 'N/A') . ' / Yr ' . ($student->year_level ?? '1'));
         $period = trim($semester . ' ' . $schoolYear);
 
-        $pdf = Pdf::loadView('cor.pdf', [
+        $pdf = app(CorPdfGenerator::class)->generate([
             'student' => $student,
             'enrollments' => $enrollments,
             'schoolYear' => $schoolYear,
@@ -105,10 +108,13 @@ class CorController extends Controller
             'paymentSchedule' => $paymentSchedule,
             'billing' => $billing,
             'generatedAt' => now(),
-        ])->setPaper('letter', 'portrait');
+        ]);
 
         $filename = 'COR-' . ($student->student_number ?? $student->id) . '-' . str_replace(' ', '-', $semester) . '.pdf';
 
-        return $pdf->download($filename);
+        return response($pdf, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
+        ]);
     }
 }

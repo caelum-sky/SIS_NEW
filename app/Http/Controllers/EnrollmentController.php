@@ -6,7 +6,7 @@ use App\Models\Enrollment;
 use App\Http\Requests\StoreEnrollmentRequest;
 use App\Http\Requests\UpdateEnrollmentRequest;
 use App\Models\Subject;
-use App\Models\Grade;
+use Illuminate\Support\Facades\DB;
 
 
 class EnrollmentController extends Controller
@@ -41,20 +41,29 @@ class EnrollmentController extends Controller
         $validated = $request->validated();
         $studentId = $validated['studentId'];
         $subjects = $validated['subjects'];
-        foreach ($subjects as $subjectId) {
-            $subject = Subject::find($subjectId);
-            Enrollment::create([
-                'student_id' => $studentId,
-                'subject_id' => $subjectId,
-                'instructor' => 'TBA',
-                'tf_units' => $subject?->units ?? 0,
-                'lab_units' => 0,
-                'schedule' => 'TBA',
-                'section' => null,
-                'school_year' => '2025-2026',
-                'semester' => '1st Semester',
-            ]);
-        }
+        $schoolYear = $validated['school_year'] ?? '2025-2026';
+        $semester = $validated['semester'] ?? '1st Semester';
+        $section = $validated['section'] ?? null;
+
+        DB::transaction(function () use ($studentId, $subjects, $schoolYear, $semester, $section) {
+            $subjectModels = Subject::whereIn('id', $subjects)->get()->keyBy('id');
+
+            foreach ($subjects as $subjectId) {
+                $subject = $subjectModels->get($subjectId);
+
+                Enrollment::create([
+                    'student_id' => $studentId,
+                    'subject_id' => $subjectId,
+                    'instructor' => 'TBA',
+                    'tf_units' => $subject?->units ?? 0,
+                    'lab_units' => 0,
+                    'schedule' => 'TBA',
+                    'section' => $section,
+                    'school_year' => $schoolYear,
+                    'semester' => $semester,
+                ]);
+            }
+        });
 
         return redirect()->back()->with('success', 'Student enrolled successfully in selected subjects!');
     }
@@ -84,9 +93,17 @@ class EnrollmentController extends Controller
     {
         $validated = $request->validated();
         $enrollment = Enrollment::findOrFail($id);
-        $enrollment->update([
-            'instructor' => $validated['instructor']
-        ]);
+        $enrollment->update(array_filter([
+            'instructor' => $validated['instructor'],
+            'tf_units' => $validated['tf_units'] ?? null,
+            'lab_units' => $validated['lab_units'] ?? null,
+            'schedule' => $validated['schedule'] ?? null,
+            'section' => $validated['section'] ?? null,
+            'room' => $validated['room'] ?? null,
+            'school_year' => $validated['school_year'] ?? null,
+            'semester' => $validated['semester'] ?? null,
+        ], fn ($value) => $value !== null));
+
         return redirect()->back()->with('success', 'Student enrollment successfully updated!');
     }
 

@@ -48,13 +48,11 @@
         </div>
     </div>
 </div>
-<script src="assets/js/stackModalHandler.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ asset('assets/js/stackModal.js') }}" defer></script>
 @include('modals.addGradeModal')
-<script src="assets/js/gradeRequestHandler.js"></script>
+<script src="{{ asset('assets/js/gradeRequestHandler.js') }}" defer></script>
 <script>
     function deleteGrade(id) {
-        console.log(id)
         if (!id) {
             return;
         }
@@ -68,7 +66,6 @@
             if (result.isConfirmed) {
                 const form = document.getElementById("IdToDeleteGrade");
                 form.action = `/grade/${id}`
-                console.log(form.action);
                 form.submit();
             }
         });

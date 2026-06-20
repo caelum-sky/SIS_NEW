@@ -28,8 +28,7 @@ $(document).ready(function () {
                     `);
                 });
             },
-            error: function (xhr, status, error) {
-                console.error("Error fetching subjects:", error);
+            error: function () {
                 $("#subjectsList").html(
                     "<p>Error loading subjects. Please try again.</p>"
                 );

@@ -22,20 +22,28 @@ class StoreEnrollmentRequest extends FormRequest
      */
     public function rules(): array
     {
+        $schoolYear = $this->input('school_year', '2025-2026');
+        $semester = $this->input('semester', '1st Semester');
+
         return [
             'studentId' => ['required', 'exists:students,id'],
             'subjects' => ['required', 'array'],
+            'school_year' => ['nullable', 'string', 'max:20'],
+            'semester' => ['nullable', 'string', 'max:50'],
+            'section' => ['nullable', 'string', 'max:50'],
             'subjects.*' => [
                 'distinct',
                 'exists:subjects,id',
-                function ($attribute, $value, $fail) {
+                function ($attribute, $value, $fail) use ($schoolYear, $semester) {
                     $studentId = $this->input('studentId');
                     $alreadyEnrolled = Enrollment::where('student_id', $studentId)
                         ->where('subject_id', $value)
+                        ->where('school_year', $schoolYear)
+                        ->where('semester', $semester)
                         ->exists();
 
                     if ($alreadyEnrolled) {
-                        $fail("The student is already enrolled in this subject.");
+                        $fail('The student is already enrolled in this subject for the selected school year and semester.');
                     }
                 }
             ],

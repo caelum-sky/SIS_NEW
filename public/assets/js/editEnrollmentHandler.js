@@ -3,7 +3,6 @@ $(document).ready(function () {
         var row = $(this).closest("tr");
 
         var eID = row.find(".eID").text();
-        console.log("asjdfklhjasdjkfhajksfhkasd", eID);
         var subjectCode = row.find(".subjectCode").text();
         var subjectName = row.find(".subjectName").text();
         var instructor = row.find(".instructor").text();
@@ -14,6 +13,7 @@ $(document).ready(function () {
         $(".modal-backdrop").css("z-index", "1040");
         $("#triggerEditEnrollment").css("z-index", "2050").modal("show");
         $("#editEnrollmentForm").attr("action", `/student/enroll/${eID}`);
+        $("#editEnrollmentForm input[name='_method']").remove();
         $("#editEnrollmentForm").append(
             '<input type="hidden" name="_method" value="PUT">'
         );
@@ -26,5 +26,6 @@ $(document).ready(function () {
         $("#subjectCode1").val("");
         $("#subjectName1").val("");
         $("#instructor").val("");
+        $("#editEnrollmentForm input[name='_method']").remove();
     });
 });

@@ -1,6 +1,5 @@
 $(document).ready(function () {
     $("#gradesModal").click(function () {
-        console.log("asdjhfkjasfsf");
         $("#triggerGradesModal").modal({
             show: true,
         });

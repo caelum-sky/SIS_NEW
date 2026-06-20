@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InterviewSchedule;
 use App\Models\Student;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -11,6 +12,22 @@ class InterviewScheduleController extends Controller
 {
     public function index()
     {
+        $month = Carbon::createFromFormat('Y-m', request('month', now()->format('Y-m')))
+            ->startOfMonth();
+        $calendarStart = $month->copy()->startOfWeek();
+        $calendarEnd = $month->copy()->endOfMonth()->endOfWeek();
+
+        $interviews = InterviewSchedule::with(['student:id,name,email,course'])
+            ->whereBetween('starts_at', [$calendarStart, $calendarEnd])
+            ->orderBy('starts_at')
+            ->get()
+            ->groupBy(fn (InterviewSchedule $schedule) => $schedule->starts_at->toDateString());
+
+        $days = [];
+        for ($day = $calendarStart->copy(); $day <= $calendarEnd; $day->addDay()) {
+            $days[] = $day->copy();
+        }
+
         $students = Student::query()
             ->where(function ($query) {
                 $query->where('year_level', '1')
@@ -20,7 +37,14 @@ class InterviewScheduleController extends Controller
             ->orderBy('name')
             ->get(['id', 'name', 'email', 'course', 'year_level', 'enrollment_status']);
 
-        return view('interviews.index', compact('students'));
+        return view('interviews.index', [
+            'students' => $students,
+            'interviews' => $interviews,
+            'weeks' => array_chunk($days, 7),
+            'month' => $month,
+            'previousMonth' => $month->copy()->subMonth()->format('Y-m'),
+            'nextMonth' => $month->copy()->addMonth()->format('Y-m'),
+        ]);
     }
 
     public function events(Request $request)

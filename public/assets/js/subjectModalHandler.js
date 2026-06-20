@@ -7,13 +7,14 @@ $(document).ready(function () {
         var name = button.data("name") || "";
         var units = button.data("units") || "";
         var actionUrl = button.data("action");
-        console.log(actionUrl);
+
         if (mode === "edit") {
             $("#modalTitle").text("Edit Subject");
             $("#submitButton").text("Update Subject");
             $("#subjectId").prop("disabled", true);
             $("#subjectCode").prop("disabled", true);
             $("#subjectIdGroup").show();
+            $("#subjectForm input[name='_method']").remove();
             $("#subjectForm").append(
                 '<input type="hidden" name="_method" value="PUT">'
             );
@@ -31,7 +32,7 @@ $(document).ready(function () {
         $("#subjectName").val(name);
         $("#units").val(units);
     });
-    $("#triggerModalSubjects").on("hidden.bs.modal", function () {
+    $("#triggerModalSubject").on("hidden.bs.modal", function () {
         $("#subjectForm")[0].reset();
         $("#subjectId").val("");
         $("#subjectForm input[name='_method']").remove();

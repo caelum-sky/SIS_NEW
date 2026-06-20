@@ -6,8 +6,8 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
@@ -23,20 +23,20 @@ class ProfileController extends Controller
     /**
      * Update the profile information.
      */
-    public function update(Request $request)
+    public function update(ProfileUpdateRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . Auth::id(),
-            'password' => 'nullable|string|min:8|confirmed',
-        ]);
+        $user = $request->user();
+        $validated = $request->validated();
 
-        $user = Auth::user();
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password ? Hash::make($request->password) : $user->password,
-        ]);
+        if ($request->filled('password')) {
+            $validated['password'] = Hash::make($request->string('password')->toString());
+        }
+
+        if ($user->email !== $validated['email']) {
+            $validated['email_verified_at'] = null;
+        }
+
+        $user->forceFill($validated)->save();
 
         return redirect()->route('profile.edit')->with('success', 'Profile updated successfully.');
     }

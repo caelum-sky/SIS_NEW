@@ -99,8 +99,6 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <script>
     function highlightRow(element) {
         document.querySelectorAll('tbody tr').forEach(row => row.classList.remove('table-active'));
@@ -156,12 +154,10 @@
     }
 </script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="assets/js/studentModalHandler.js"></script>
-<script src="assets/js/enrollmentModalHandler.js"></script>
-<script src="assets/js/studentInfoModalHandler.js"></script>
+<script src="{{ asset('assets/js/studentModalHandler.js') }}" defer></script>
+<script src="{{ asset('assets/js/enrollmentModalHandler.js') }}" defer></script>
+<script src="{{ asset('assets/js/studentInfoModalHandler.js') }}" defer></script>
 @include('modals.studentModal')
 @include('modals.enrollmentModal')
 @include('modals.studentInfoModal')
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

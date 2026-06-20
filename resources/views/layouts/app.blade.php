@@ -5,12 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@yield('title')</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="assets/css/custom-style.css">
-   
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 
@@ -59,22 +54,4 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#triggerModal').on('show.bs.modal', function (event) {
-                let button = $(event.relatedTarget);  // Button that triggered the modal
-                let modal = $(this);
-
-                // Extract data attributes
-                modal.find('.modal-title').text('Edit Student - ' + button.data('name'));
-                modal.find('form').attr('action', button.data('action'));
-                modal.find('[name="name"]').val(button.data('name'));
-                modal.find('[name="email"]').val(button.data('email'));
-                modal.find('[name="address"]').val(button.data('address'));
-                modal.find('[name="course"]').val(button.data('course'));
-            });
-        });
-    </script>
 </body>

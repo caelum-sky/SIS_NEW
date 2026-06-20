@@ -8,14 +8,14 @@ $(document).ready(function () {
         var address = button.data("address") || "";
         var course = button.data("course") || "";
         var actionUrl = button.data("action");
-        var method = button.data("method");
-        console.log(actionUrl);
+
         if (mode === "edit") {
             $("#modalTitle").text("Edit Student");
             $("#submitButton").text("Update Student");
             $("#studentId").prop("disabled", true);
-            $("#studentEmail").prop("enabled", true);
+            $("#studentEmail").prop("disabled", false);
             $("#studentIdGroup").show();
+            $("#studentForm input[name='_method']").remove();
             $("#studentForm").append(
                 '<input type="hidden" name="_method" value="PUT">'
             );
@@ -23,7 +23,7 @@ $(document).ready(function () {
             $("#modalTitle").text("Add Student");
             $("#submitButton").text("Add Student");
             $("#studentIdGroup").hide();
-            $("#studentEmail").prop("enabled", true);
+            $("#studentEmail").prop("disabled", false);
             $("#studentForm input[name='_method']").remove();
         }
         $("#studentForm").attr("method", "POST");

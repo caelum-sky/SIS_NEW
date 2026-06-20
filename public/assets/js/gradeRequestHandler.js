@@ -5,12 +5,11 @@ $(document).ready(function () {
         var grade = row.find(".subjectGrade").text();
         var enrollmentId = row.find(".enrollmentId").text();
         var subjectCode = row.find(".subjectCode").text();
-        console.log("ahsdjkfhajksdf: ", enrollmentId);
         var actionUrl = "/grade";
         if (grade !== "") {
             return;
         }
-        console.log(studentId);
+
         $("#triggerGradesModal").css({
             "z-index": "1040",
             display: "block",
@@ -44,6 +43,7 @@ $(document).ready(function () {
 
         $(".modal-backdrop").css("z-index", "1039");
         $("#triggerAddGradeModal").css("z-index", "2050").modal("show");
+        $("#gradeForm input[name='_method']").remove();
         $("#gradeForm").append(
             '<input type="hidden" name="_method" value="PUT">'
         );
@@ -62,6 +62,6 @@ $(document).ready(function () {
         $("#sCode").val("");
         $("#grade").val("");
         $("#gradeModalTitle").text("");
-        $("#subjectForm input[name='_method']").remove();
+        $("#gradeForm input[name='_method']").remove();
     });
 });

@@ -54,12 +54,11 @@
         </div>
     </div>
 </div>
-<script src="assets/js/gradesModalHandler.js"></script>
-<script src="assets/js/editEnrollmentHandler.js"></script>
+<script src="{{ asset('assets/js/gradesModalHandler.js') }}" defer></script>
+<script src="{{ asset('assets/js/editEnrollmentHandler.js') }}" defer></script>
 
 <script>
     function deleteSubject(id) {
-        console.log(id);
         Swal.fire({
             title: "Delete",
             text: "Are you sure you want to remove this subject for this student?",
@@ -70,7 +69,6 @@
             if (result.isConfirmed) {
                 const form = document.getElementById("IdToDelete");
                 form.action = `/student/enroll/${id}`
-                console.log(form.action);
                 form.submit();
             }
         });

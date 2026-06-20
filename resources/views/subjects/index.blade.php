@@ -81,8 +81,6 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 @if(\Session::has('success'))
 <script>
     Swal.fire({
@@ -134,8 +132,6 @@
     }
 </script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="assets/js/subjectModalHandler.js"></script>
+<script src="{{ asset('assets/js/subjectModalHandler.js') }}" defer></script>
 @include('modals.subjectModal')
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

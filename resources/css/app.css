@@ -1,3 +1,66 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import 'sweetalert2/dist/sweetalert2.min.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body.bg-dark {
+    background: #111827 !important;
+}
+
+.sidebar .nav-link {
+    border-radius: .5rem;
+    transition: background-color .15s ease, color .15s ease;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link:focus {
+    background: rgba(255, 255, 255, .12);
+}
+
+.content-wrapper {
+    min-height: calc(100vh - 95px);
+}
+
+.sis-calendar {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.sis-calendar-head {
+    padding: .75rem;
+    border-bottom: 1px solid #e5e7eb;
+    border-right: 1px solid #e5e7eb;
+    font-weight: 700;
+    text-align: center;
+    background: #f8fafc;
+}
+
+.sis-calendar-day {
+    min-height: 135px;
+    padding: .65rem;
+    border-right: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+    background: #fff;
+}
+
+.sis-calendar-day.is-muted {
+    background: #f8fafc;
+    color: #94a3b8;
+}
+
+@media (max-width: 900px) {
+    .sis-calendar {
+        grid-template-columns: 1fr;
+    }
+
+    .sis-calendar-head {
+        display: none;
+    }
+
+    .sis-calendar-day {
+        min-height: auto;
+    }
+}
