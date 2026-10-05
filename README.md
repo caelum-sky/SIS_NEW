@@ -446,3 +446,8 @@ This project is open-sourced software licensed under the [MIT license](https://o
 3. The ercel composer script runs config:cache, oute:cache, iew:cache, and migrate --force during build. After the first deploy, seed once with: php artisan db:seed --force run via a one-off command (e.g. ercel env pull + local run against Supabase).
 4. Static files under public/ are served directly; everything else routes through pi/index.php (the PHP serverless handler). Writable storage is redirected to /tmp for serverless compatibility.
 
+
+
+### Supabase connection note
+Use the **pooler** host (ws-0-<region>.pooler.supabase.com) with user postgres.<project-ref> — the direct host (db.<ref>.supabase.co) is IPv6-only on many setups and fails locally/serverless. Port 5432 (session mode) works for migrations and the app.
+
