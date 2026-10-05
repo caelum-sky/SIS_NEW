@@ -11,7 +11,19 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.31",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "ext-openssl": "*",
+        "ext-pdo": "*",
+        "ext-pdo_pgsql": "*",
+        "ext-pgsql": "*",
+        "ext-mbstring": "*",
+        "ext-gd": "*",
+        "ext-curl": "*",
+        "ext-fileinfo": "*",
+        "ext-tokenizer": "*",
+        "ext-xml": "*",
+        "ext-ctype": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
