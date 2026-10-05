@@ -19,13 +19,14 @@
     $totalAttendance = \App\Models\AttendanceRecord::count();
     $presentAttendance = \App\Models\AttendanceRecord::where('status', 'present')->count();
     $attendanceRate = $totalAttendance > 0 ? round($presentAttendance / $totalAttendance * 100, 1) : null;
-    $avgGrade = \App\Models\Grade::whereNotNull('grade')->avg('grade');
+    $avgGrade = \App\Models\Grade::whereNotNull('grade')->whereRaw("grade ~ '^[0-9]+(\\.[0-9]+)?$'")->selectRaw('avg(grade::numeric) as v')->value('v');
     $recentStudents = \App\Models\Student::latest()->take(5)->get();
     $recentEnrollments = \App\Models\Enrollment::with(['student:id,name', 'subject:id,code,name'])->latest()->take(5)->get();
     $enrollmentByCourse = \App\Models\Student::selectRaw('course, COUNT(*) as total')->groupBy('course')->orderByDesc('total')->limit(6)->get();
     $maxCourse = max(1, (int) ($enrollmentByCourse->max('total') ?? 1));
     $gradeBuckets = ['1.0–1.5' => 0, '1.6–2.0' => 0, '2.1–3.0' => 0, '3.1+' => 0];
     foreach (\App\Models\Grade::whereNotNull('grade')->pluck('grade') as $g) {
+        if (!is_numeric($g)) continue;
         $v = (float) $g;
         if ($v <= 1.5) $gradeBuckets['1.0–1.5']++;
         elseif ($v <= 2.0) $gradeBuckets['1.6–2.0']++;
