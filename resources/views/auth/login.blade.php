@@ -5,7 +5,7 @@
 
     <div class="text-center mb-4">
         <span class="brand-mark d-inline-grid" style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#2563EB,#06B6D4);color:#fff;font-size:1.3rem;place-items:center;box-shadow:0 8px 24px -8px rgba(37,99,235,.7);"><i class="bi bi-mortarboard-fill"></i></span>
-        <h2 class="h4 fw-bold text-white mb-1 mt-3">Welcome back</h2>
+        <h1 class="h4 fw-bold text-white mb-1 mt-3">Welcome back</h1>
         <p class="text-sm mb-0" style="color:var(--text-3);">{{ config('app.school_name') }} — sign in to continue.</p>
     </div>
 
