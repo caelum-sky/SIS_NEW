@@ -3,68 +3,81 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', config('app.name'))</title>
     @include('partials.seo')
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
-    <style>
-        @media (max-width: 768px) {
-            .d-flex { flex-direction: column; }
-            .sidebar { width: 100% !important; min-height: auto !important; }
-            .sidebar .nav { flex-direction: row !important; flex-wrap: wrap; }
-            .sidebar .nav-item { margin: 0 .25rem !important; }
-        }
-    </style>
 </head>
 
-<body class="bg-dark">
-    <div class="container-scroller">
-        <nav class="navbar navbar-expand-lg bg-black text-white shadow-sm">
-            <div class="container-fluid">
-                <a class="navbar-brand fw-bold text-white" href="{{ route('student.dashboard') }}">Student Portal</a>
-                <div class="d-flex align-items-center">
-                    <h5 class="me-3 m-0">Hello, {{ auth('student')->user()->name }}</h5>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="btn btn-outline-light">Logout</button>
-                    </form>
-                </div>
-            </div>
-        </nav>
+<body>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    <div class="app-shell">
+        <aside class="app-sidebar" id="appSidebar">
+            <a href="{{ route('student.dashboard') }}" class="brand">
+                <span class="brand-mark"><i class="bi bi-mortarboard-fill"></i></span>
+                <span>
+                    <span class="brand-name">{{ config('app.school_name') }}</span><br>
+                    <span class="brand-sub">Student Portal</span>
+                </span>
+            </a>
 
-        <div class="d-flex">
-            <nav class="sidebar bg-black text-white p-3" style="width: 250px; min-height: 100vh;">
-                <ul class="nav flex-column">
-                    <li class="nav-item my-2">
-                        <a class="nav-link text-white" href="{{ route('student.dashboard') }}">
-                            <i class="bi bi-speedometer2"></i> Grades
-                        </a>
-                    </li>
-                    <li class="nav-item my-2">
-                        <a class="nav-link text-white" href="{{ route('student.requirements.index') }}">
-                            <i class="bi bi-file-earmark-arrow-up"></i> Requirements
-                        </a>
-                    </li>
-                    <li class="nav-item my-2">
-                        <a class="nav-link text-white" href="{{ route('student.cor.download') }}">
-                            <i class="bi bi-file-pdf"></i> Download COR
-                        </a>
-                    </li>
-                    <li class="nav-item my-2">
-                        <a class="nav-link text-white" href="{{ route('student.profile.edit') }}">
-                            <i class="bi bi-person-circle"></i> My Profile
-                        </a>
-                    </li>
-                </ul>
+            <div class="nav-section">Portal</div>
+            <nav class="app-nav">
+                <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('student.dashboard') ? 'active' : '' }}"><i class="bi bi-grid-1x2"></i> My Grades</a>
+                <a href="{{ route('student.requirements.index') }}" class="{{ request()->routeIs('student.requirements.*') ? 'active' : '' }}"><i class="bi bi-file-earmark-arrow-up"></i> Requirements</a>
+                <a href="{{ route('student.cor.download') }}"><i class="bi bi-file-pdf"></i> Download COR</a>
+                <a href="{{ route('student.profile.edit') }}" class="{{ request()->routeIs('student.profile.*') ? 'active' : '' }}"><i class="bi bi-person-circle"></i> My Profile</a>
             </nav>
 
-            <div class="content container-fluid p-4">
-                @yield('content')
+            <div class="sidebar-foot">
+                <nav class="app-nav">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-100 text-start" style="background:none;border:none;padding:.55rem .75rem;border-radius:10px;color:var(--text-3);font-weight:500;font-size:.9rem;display:flex;align-items:center;gap:.7rem;">
+                            <i class="bi bi-box-arrow-right" style="width:20px;text-align:center;"></i> Logout
+                        </button>
+                    </form>
+                </nav>
             </div>
+        </aside>
+
+        <div class="app-main">
+            <header class="app-topbar">
+                <button class="icon-btn mobile-nav-toggle" id="sidebarToggle" aria-label="Toggle navigation"><i class="bi bi-list"></i></button>
+                <h1 class="h6 m-0 d-none d-md-block" style="color:var(--text-1);font-weight:700;">@yield('title')</h1>
+                <div class="topbar-actions">
+                    <button class="icon-btn" aria-label="Notifications"><i class="bi bi-bell"></i></button>
+                    <div class="user-chip">
+                        <span class="avatar">{{ strtoupper(substr(auth('student')->user()->name, 0, 1)) }}</span>
+                        <span class="d-none d-sm-block">
+                            <span class="name">{{ auth('student')->user()->name }}</span><br>
+                            <span class="role">Student</span>
+                        </span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="app-content">
+                @yield('content')
+            </main>
         </div>
     </div>
 
+    <script>
+        (function () {
+            var toggle = document.getElementById('sidebarToggle');
+            var sidebar = document.getElementById('appSidebar');
+            var backdrop = document.getElementById('sidebarBackdrop');
+            function close() { sidebar.classList.remove('open'); backdrop.classList.remove('open'); }
+            if (toggle) toggle.addEventListener('click', function () {
+                sidebar.classList.toggle('open'); backdrop.classList.toggle('open');
+            });
+            if (backdrop) backdrop.addEventListener('click', close);
+        })();
+    </script>
     @stack('scripts')
 </body>
 

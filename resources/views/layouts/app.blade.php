@@ -3,56 +3,67 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', config('app.name'))</title>
     @include('partials.seo')
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
 </head>
 
-
-<body class="bg-dark">
-
-    <div class="container-scroller">
-        <nav class="navbar navbar-expand-lg bg-black text-white shadow-sm">
-            <div class="container-fluid">
-                <a class="navbar-brand fw-bold text-white" href="/dashboard">@yield('title')</a>
-                <div class="d-flex align-items-center">
-                    <h5 class="me-3 m-0">Hello, {{ auth()->user()->name }}</h5>
+<body>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    <div class="app-shell">
+        <aside class="app-sidebar" id="appSidebar">
+            <a href="{{ route('dashboard') }}" class="brand">
+                <span class="brand-mark"><i class="bi bi-mortarboard-fill"></i></span>
+                <span>
+                    <span class="brand-name">{{ config('app.school_name') }}</span><br>
+                    <span class="brand-sub">Admin Portal</span>
+                </span>
+            </a>
+            <div class="nav-section">Main</div>
+            <nav class="app-nav">
+                <a href="{{ route('dashboard') }}"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+                <a href="{{ route('students.index') }}"><i class="bi bi-people"></i> Students</a>
+                <a href="{{ route('subjects.index') }}"><i class="bi bi-book"></i> Subjects</a>
+                <a href="{{ route('profile.edit') }}" class="active"><i class="bi bi-gear"></i> Settings</a>
+            </nav>
+            <div class="sidebar-foot">
+                <nav class="app-nav">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="btn btn-outline-light">Logout</button>
+                        <button type="submit" style="background:none;border:none;padding:.55rem .75rem;border-radius:10px;color:var(--text-3);font-weight:500;font-size:.9rem;display:flex;align-items:center;gap:.7rem;width:100%;text-align:left;">
+                            <i class="bi bi-box-arrow-right" style="width:20px;text-align:center;"></i> Logout
+                        </button>
                     </form>
+                </nav>
+            </div>
+        </aside>
+        <div class="app-main">
+            <header class="app-topbar">
+                <button class="icon-btn mobile-nav-toggle" id="sidebarToggle" aria-label="Toggle navigation"><i class="bi bi-list"></i></button>
+                <div class="topbar-actions">
+                    <div class="user-chip">
+                        <span class="avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                        <span class="d-none d-sm-block">
+                            <span class="name">{{ auth()->user()->name }}</span><br>
+                            <span class="role">Administrator</span>
+                        </span>
+                    </div>
                 </div>
-            </div>
-        </nav>
-
-        <div class="d-flex">
-            <nav class="sidebar bg-black text-white p-3" style="width: 250px; min-height: 100vh;">
-                <ul class="nav flex-column">
-                    <li class="nav-item my-2">
-                        <a class="nav-link text-white" href="/students">
-                            <i class="bi bi-person-lines-fill"></i> Student List
-                        </a>
-                    </li>
-                    <li class="nav-item my-2">
-                        <a class="nav-link text-white" href="/subjects">
-                            <i class="bi bi-book"></i> Subject List
-                        </a>
-                    </li>
-                    <li class="nav-item my-2">
-                        <a class="nav-link text-white" href="{{ route('profile.edit') }}">
-                            <i class="bi bi-person-circle"></i> Edit Profile
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-        <!-- Page Content -->
-        <div class="content container-fluid p-4">
-            {{ $slot }}
-            </div>
+            </header>
+            <main class="app-content">{{ $slot }}</main>
         </div>
     </div>
-
+    <script>
+        (function () {
+            var t = document.getElementById('sidebarToggle'), s = document.getElementById('appSidebar'), b = document.getElementById('sidebarBackdrop');
+            function c(){s.classList.remove('open');b.classList.remove('open');}
+            if(t)t.addEventListener('click',function(){s.classList.toggle('open');b.classList.toggle('open');});
+            if(b)b.addEventListener('click',c);
+        })();
+    </script>
 </body>
+
+</html>
