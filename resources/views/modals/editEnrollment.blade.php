@@ -8,17 +8,17 @@
             <div class="modal-body bg-light p-4">
                 <form action="" method="POST" id="editEnrollmentForm">
                     @csrf
-                    <input hidden class="form-control" name="enrollment_id" id="enrollment_id" placeholder="123">
+                    <input hidden class="form-control" name="enrollment_id" id="enrollment_id" placeholder=" ">
                     <div class="form-floating mb-3">
-                        <input type="num" class="form-control" disabled name="subject_code" id="subjectCode1" placeholder="123">
+                        <input type="num" class="form-control" disabled name="subject_code" id="subjectCode1" placeholder=" ">
                         <label for="subjectCode">Subject Code</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="num" class="form-control" disabled name="subjectName" id="subjectName1" placeholder="123">
+                        <input type="num" class="form-control" disabled name="subjectName" id="subjectName1" placeholder=" ">
                         <label for="subjectName">Subject Name</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="instructor" id="instructor" placeholder="Enter Name">
+                        <input type="text" class="form-control" name="instructor" id="instructor" placeholder=" ">
                         <label for="instructor">Instructor</label>
                     </div>
                     <button type="submit" class="btn btn-success fw-bold" id="submitButton" style="width: 100%;">Submit</button>

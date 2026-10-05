@@ -9,19 +9,19 @@
                 <form action="" method="" id="subjectForm">
                     @csrf
                     <div class="form-floating mb-3" id="subjectIdGroup">
-                        <input type="num" class="form-control" name="id" id="subjectId" placeholder="123">
+                        <input type="num" class="form-control" name="id" id="subjectId" placeholder=" ">
                         <label for="subjectId">ID</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="code" id="subjectCode" placeholder="Enter Code">
+                        <input type="text" class="form-control" name="code" id="subjectCode" placeholder=" ">
                         <label for="subjectCode">Subject Code</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="name" id="subjectName" placeholder="Enter Name">
+                        <input type="text" class="form-control" name="name" id="subjectName" placeholder=" ">
                         <label for="subjectName">Subject Name</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" name="units" id="units" placeholder="Enter Units">
+                        <input type="number" class="form-control" name="units" id="units" placeholder=" ">
                         <label for="units">Units</label>
                     </div>
                     <button type="submit" class="btn btn-success" id="submitButton" style="width: 100%;">Submit</button>

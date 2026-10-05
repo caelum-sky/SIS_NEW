@@ -9,23 +9,23 @@
                 <form action="" method="" id="studentForm">
                     @csrf
                     <div class="form-floating mb-3" id="studentIdGroup">
-                        <input type="num" class="form-control" name="id" id="studentId" placeholder="123">
+                        <input type="number" class="form-control" name="id" id="studentId" placeholder=" ">
                         <label for="studentId">ID</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="name" id="studentName" placeholder="Enter Name">
+                        <input type="text" class="form-control" name="name" id="studentName" placeholder=" ">
                         <label for="studentName">Name</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control" name="email" id="studentEmail" placeholder="Enter Email">
+                        <input type="email" class="form-control" name="email" id="studentEmail" placeholder=" ">
                         <label for="studentEmail">Email</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="address" id="address" placeholder="Enter Address">
+                        <input type="text" class="form-control" name="address" id="address" placeholder=" ">
                         <label for="address">Address</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="course" id="course" placeholder="Enter Course">
+                        <input type="text" class="form-control" name="course" id="course" placeholder=" ">
                         <label for="course">Course</label>
                     </div>
                     <button type="submit" class="btn btn-primary" id="submitButton" style="width: 100%;">Submit</button>

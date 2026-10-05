@@ -9,13 +9,13 @@
                 <form action="" method="POST" id="gradeForm">
                     @csrf
                     <div class="form-floating mb-3">
-                        <input class="form-control" name="studentId" id="studentIdGrade" placeholder="123">
+                        <input class="form-control" name="studentId" id="studentIdGrade" placeholder=" ">
                         <label for="studentId">Student ID</label>
                     </div>
                     <input hidden class="form-control" name="enrollment_id" id="enrollment_id">
                     <input hidden class="form-control" name="grade_id" id="grade_id">
                     <div class="form-floating mb-3">
-                        <input type="num" class="form-control" name="subject_code" id="sCode" placeholder="123">
+                        <input type="num" class="form-control" name="subject_code" id="sCode" placeholder=" ">
                         <label for="sCode">Subject Code</label>
                     </div>
                     <div class="form-floating mb-3">
