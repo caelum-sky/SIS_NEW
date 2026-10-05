@@ -11,6 +11,15 @@ foreach (['', '/app/public', '/framework', '/framework/cache', '/framework/sessi
     }
 }
 
+// The deployment's bundled compiled views can't be modified (read-only bundle),
+// so copy them into the tmp storage for Blade to read during booting.
+$bundledViews = __DIR__.'/../storage/framework/views';
+if (is_dir($bundledViews)) {
+    foreach (glob($bundledViews.'/*.php') as $bundled) {
+        @copy($bundled, $storagePath.'/framework/views/'.basename($bundled));
+    }
+}
+
 define('LARAVEL_START', microtime(true));
 
 // Production must never print PHP warnings/deprecations into the HTML
@@ -33,24 +42,15 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 
 $app->useStoragePath($storagePath);
 
-// Blade looks for its compiled views under storage_path(); after we moved
-// storage to /tmp, point it at the deployment's pre-compiled views (from
-// `php artisan view:cache` at build time), which are read-only.
-$deployedViews = __DIR__.'/../storage/framework/views';
-if (is_dir($deployedViews)) {
-    $app['config']->set('view.compiled', $deployedViews);
-}
-
-// Also make /tmp's own compiled-views dir writable for Blade (cache fallback).
-
-if (! is_dir($storagePath.'/framework/views')) {
-    @mkdir($storagePath.'/framework/views', 0777, true);
-}
-
 // Vercel terminates TLS at the edge, but APP_URL may still say http://.
-// Force https:// URLs/routes so the browser doesn't get mixed-content warnings.
+// Override the canonical URL env before config load so assets/routes are https.
 if (! empty($_SERVER['VERCEL']) || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https' || ($_SERVER['HTTPS'] ?? '') === 'on') {
-    $app['url']->forceScheme('https');
+    $host = $_SERVER['HTTP_HOST'] ?? '';
+    if ($host !== '') {
+        $_ENV['APP_URL'] = 'https://'.$host;
+        $_SERVER['APP_URL'] = 'https://'.$host;
+        putenv('APP_URL=https://'.$host);
+    }
 }
 
 $app->handleRequest(Request::capture());
