@@ -451,3 +451,4 @@ This project is open-sourced software licensed under the [MIT license](https://o
 ### Supabase connection note
 Use the **pooler** host (ws-0-<region>.pooler.supabase.com) with user postgres.<project-ref> — the direct host (db.<ref>.supabase.co) is IPv6-only on many setups and fails locally/serverless. Port 5432 (session mode) works for migrations and the app.
 
+
