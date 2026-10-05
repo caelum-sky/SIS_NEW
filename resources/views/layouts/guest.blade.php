@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-    <div class="dropdown" style="position:fixed;bottom:1rem;right:1rem;z-index:50;">
+    <div class="dropdown" style="position:fixed;top:1rem;right:1rem;z-index:50;">
         <button class="icon-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Theme"><i class="bi bi-brightness-half"></i></button>
         <ul class="dropdown-menu dropdown-menu-end" style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:12px;">
             <li><a class="dropdown-item" href="#" onclick="setTheme('light');return false;" style="color:var(--text-2);"><i class="bi bi-sun"></i> Light</a></li>

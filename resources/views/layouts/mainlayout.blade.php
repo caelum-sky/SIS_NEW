@@ -88,14 +88,6 @@
                 <div class="topbar-actions">
                     <button class="icon-btn" aria-label="Notifications"><i class="bi bi-bell"></i></button>
                     <div class="dropdown">
-                        <button class="icon-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Theme"><i class="bi bi-brightness-half"></i></button>
-                        <ul class="dropdown-menu dropdown-menu-end" style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:12px;">
-                            <li><a class="dropdown-item" href="#" onclick="setTheme('light');return false;" style="color:var(--text-2);"><i class="bi bi-sun"></i> Light</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="setTheme('dark');return false;" style="color:var(--text-2);"><i class="bi bi-moon-stars"></i> Dark</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="setTheme('device');return false;" style="color:var(--text-2);"><i class="bi bi-display"></i> Device</a></li>
-                        </ul>
-                    </div>
-                    <div class="dropdown">
                         <button type="button" class="user-chip dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="cursor:pointer;border:1px solid var(--border-soft);background:var(--surface-2);color:inherit;font-family:inherit;">
                             <span class="avatar">
                                 @if(auth()->user()->profile_photo)
@@ -111,6 +103,11 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:12px;">
                             <li><a class="dropdown-item" href="{{ route('profile.edit') }}" style="color:var(--text-2);"><i class="bi bi-gear"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider" style="border-color:var(--border-soft);"></li>
+                            <li><h6 class="dropdown-header" style="color:var(--text-3);">Theme</h6></li>
+                            <li><a class="dropdown-item" href="#" onclick="setTheme('light');return false;" style="color:var(--text-2);"><i class="bi bi-sun"></i> Light</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setTheme('dark');return false;" style="color:var(--text-2);"><i class="bi bi-moon-stars"></i> Dark</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setTheme('device');return false;" style="color:var(--text-2);"><i class="bi bi-display"></i> Device</a></li>
                             <li><hr class="dropdown-divider" style="border-color:var(--border-soft);"></li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
