@@ -28,4 +28,10 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 
 $app->useStoragePath($storagePath);
 
+// Vercel terminates TLS at the edge, but APP_URL may still say http://.
+// Force https:// URLs/routes so the browser doesn't get mixed-content warnings.
+if (! empty($_SERVER['VERCEL']) || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https' || ($_SERVER['HTTPS'] ?? '') === 'on') {
+    $app['url']->forceScheme('https');
+}
+
 $app->handleRequest(Request::capture());
