@@ -9,7 +9,7 @@
                 <form action="" method="" id="subjectForm">
                     @csrf
                     <div class="form-floating mb-3" id="subjectIdGroup">
-                        <input type="num" class="form-control" name="id" id="subjectId" placeholder=" ">
+                        <input type="text" class="form-control" name="id" id="subjectId" placeholder=" ">
                         <label for="subjectId">ID</label>
                     </div>
                     <div class="form-floating mb-3">

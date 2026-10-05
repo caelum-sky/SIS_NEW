@@ -10,11 +10,11 @@
                     @csrf
                     <input hidden class="form-control" name="enrollment_id" id="enrollment_id" placeholder=" ">
                     <div class="form-floating mb-3">
-                        <input type="num" class="form-control" disabled name="subject_code" id="subjectCode1" placeholder=" ">
+                        <input type="text" class="form-control" disabled name="subject_code" id="subjectCode1" placeholder=" ">
                         <label for="subjectCode">Subject Code</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="num" class="form-control" disabled name="subjectName" id="subjectName1" placeholder=" ">
+                        <input type="text" class="form-control" disabled name="subjectName" id="subjectName1" placeholder=" ">
                         <label for="subjectName">Subject Name</label>
                     </div>
                     <div class="form-floating mb-3">

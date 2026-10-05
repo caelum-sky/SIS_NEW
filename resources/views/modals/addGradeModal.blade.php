@@ -15,7 +15,7 @@
                     <input hidden class="form-control" name="enrollment_id" id="enrollment_id">
                     <input hidden class="form-control" name="grade_id" id="grade_id">
                     <div class="form-floating mb-3">
-                        <input type="num" class="form-control" name="subject_code" id="sCode" placeholder=" ">
+                        <input type="text" class="form-control" name="subject_code" id="sCode" placeholder=" ">
                         <label for="sCode">Subject Code</label>
                     </div>
                     <div class="form-floating mb-3">
