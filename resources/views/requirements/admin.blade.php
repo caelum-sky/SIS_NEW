@@ -34,7 +34,7 @@
                             <td>{{ $submission->submitted_at?->format('M d, Y') ?? '—' }}</td>
                             <td>
                                 @if($submission->file_path)
-                                    <a href="{{ Storage::url($submission->file_path) }}" target="_blank" class="btn btn-sm btn-outline-primary">View</a>
+                                    <a href="{{ route('admin.requirements.document', $submission) }}" target="_blank" class="btn btn-sm btn-outline-primary">View</a>
                                 @endif
                                 <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal{{ $submission->id }}">Review</button>
                             </td>

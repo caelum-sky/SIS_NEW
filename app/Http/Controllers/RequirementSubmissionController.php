@@ -10,6 +10,21 @@ use Illuminate\Validation\Rule;
 
 class RequirementSubmissionController extends Controller
 {
+    public function document(RequirementSubmission $requirement)
+    {
+        $student = auth('student')->user();
+        $user = auth('web')->user();
+
+        abort_unless(
+            ($student && $requirement->student_id === $student->id) || ($user && $user->isAdmin()),
+            403
+        );
+
+        abort_unless($requirement->file_path && Storage::disk('local')->exists($requirement->file_path), 404);
+
+        return Storage::disk('local')->download($requirement->file_path, basename($requirement->file_path));
+    }
+
     public function studentIndex()
     {
         $student = auth('student')->user();
@@ -43,7 +58,7 @@ class RequirementSubmissionController extends Controller
         ]);
 
         $requirement = RequirementSubmission::REQUIREMENTS[$validated['requirement_key']];
-        $path = $request->file('document')->store("requirements/{$student->id}", 'public');
+        $path = $request->file('document')->store("requirements/{$student->id}", 'local');
 
         RequirementSubmission::updateOrCreate(
             [

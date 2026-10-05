@@ -40,6 +40,7 @@ Route::middleware(['auth:student'])->prefix('student')->name('student.')->group(
     Route::put('/profile/password', [StudentProfileController::class, 'updatePassword'])->name('profile.password');
     Route::get('/requirements', [RequirementSubmissionController::class, 'studentIndex'])->name('requirements.index');
     Route::post('/requirements', [RequirementSubmissionController::class, 'store'])->name('requirements.store');
+    Route::get('/requirements/{requirement}/document', [RequirementSubmissionController::class, 'document'])->name('requirements.document');
     Route::get('/cor/download', [CorController::class, 'download'])->name('cor.download');
 });
 
@@ -58,6 +59,7 @@ Route::middleware(['auth:web', 'verified', 'admin'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/requirements', [RequirementSubmissionController::class, 'adminIndex'])->name('requirements.index');
         Route::patch('/requirements/{requirement}', [RequirementSubmissionController::class, 'review'])->name('requirements.review');
+        Route::get('/requirements/{requirement}/document', [RequirementSubmissionController::class, 'document'])->name('requirements.document');
     });
 
     Route::prefix('admin/interviews')->name('interviews.')->group(function () {

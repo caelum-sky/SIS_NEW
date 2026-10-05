@@ -71,7 +71,7 @@
                                     {{ $submission ? 'Re-upload' : 'Submit' }}
                                 </button>
                                 @if($submission?->file_path)
-                                    <a href="{{ Storage::url($submission->file_path) }}" target="_blank" class="btn btn-sm btn-outline-primary">View</a>
+                                    <a href="{{ route('student.requirements.document', $submission) }}" target="_blank" class="btn btn-sm btn-outline-primary">View</a>
                                 @endif
                             </form>
                         </div>
