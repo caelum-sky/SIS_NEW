@@ -5,7 +5,7 @@
                 <h5 class="modal-title fw-bold fs-5" id="gradeModalTitle">Add Grade</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" id="closeModal" aria-label="Close"></button>
             </div>
-            <div class="modal-body bg-white p-4">
+            <div class="modal-body p-4">
                 <form action="" method="POST" id="gradeForm">
                     @csrf
                     <div class="form-floating mb-3">

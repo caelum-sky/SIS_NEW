@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" id="closeModal" aria-label="Close"></button>
             </div>
             <div class="modal-body bg-light p-4">
-                <div id="informationCOntainer" class="d-flex gap-5 p-2 mb-3 rounded-3 border bg-white">
+                <div id="informationCOntainer" class="d-flex gap-5 p-2 mb-3 rounded-3 border">
                     <div>
                         <p class="fw-bold mb-1">ID: <span id="student_id" class="fw-normal ms-2"></span></p>
                         <p class="fw-bold mb-1">Name: <span id="student_name" class="fw-normal ms-2"> </span></p>
@@ -19,7 +19,7 @@
                         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#triggerGradesModal" type="btn">View Grades</button>
                     </div>
                 </div>
-                <div class="border rounded-3 bg-white p-3" style="max-height: 500px; overflow-y:scroll; scrollbar-width:none">
+                <div class="border rounded-3 p-3" style="max-height: 500px; overflow-y:scroll; scrollbar-width:none">
                     <table class="table table-striped">
                         <colGroup>
                             <col width="10%">

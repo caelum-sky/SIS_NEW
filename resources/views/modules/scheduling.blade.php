@@ -4,9 +4,9 @@
 <div class="main-panel">
     <div class="content-wrapper">
         <h3 class="text-white fw-bold mb-4">Class Timetables & Room Assignments</h3>
-        <div class="table-responsive bg-white rounded-3 shadow-sm">
+        <div class="table-responsive">
             <table class="table table-hover mb-0">
-                <thead class="table-light">
+                <thead class="">
                     <tr><th>Subject</th><th>Section</th><th>Day</th><th>Time</th><th>Room</th><th>Instructor</th><th>Capacity</th><th>SY / Sem</th></tr>
                 </thead>
                 <tbody>

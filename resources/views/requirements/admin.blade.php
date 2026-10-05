@@ -9,9 +9,9 @@
 
         <h3 class="text-white fw-bold mb-4">Enrollment Requirement Submissions</h3>
 
-        <div class="table-responsive bg-white rounded-3 shadow-sm">
+        <div class="table-responsive">
             <table class="table table-hover mb-0">
-                <thead class="table-light">
+                <thead class="">
                     <tr>
                         <th>Student</th>
                         <th>Requirement</th>

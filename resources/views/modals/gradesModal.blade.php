@@ -7,7 +7,7 @@
             </div>
 
             <div class="modal-body bg-light p-4">
-                <div id="informationCOntainer" class="d-flex p-2 mb-3 rounded-3 border bg-white">
+                <div id="informationCOntainer" class="d-flex p-2 mb-3 rounded-3 border">
                     <div style="flex:1;">
                         <p class="fw-bold mb-1">ID: <span id="sID" class="fw-normal ms-2"></span></p>
                         <p class="fw-bold mb-1">Name: <span id="sName" class="fw-normal ms-2"></span></p>
@@ -17,7 +17,7 @@
                         <p class="fw-bold mb-1">Course: <span id="sAddress" class="fw-normal ms-2"></span></p>
                     </div>
                 </div>
-                <div class="border rounded-3 bg-white p-3" style="max-height: 500px; overflow-y:scroll; scrollbar-width:none">
+                <div class="border rounded-3 p-3" style="max-height: 500px; overflow-y:scroll; scrollbar-width:none">
                     <table class="table table-striped">
                         <colGroup>
                             <col width="10%">

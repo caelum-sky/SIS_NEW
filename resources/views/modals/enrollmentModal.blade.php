@@ -10,7 +10,7 @@
                     @csrf
                     <input type="hidden" name="studentId" id="id">
                     <h6 class="text-secondary">Available Subjects:</h6>
-                    <div id="subjectsList" class="border rounded-3 p-2 bg-white" style="max-height: 500px; overflow-y:scroll"></div>
+                    <div id="subjectsList" class="border rounded-3 p-2" style="max-height: 500px; overflow-y:scroll"></div>
 
                     <button type="submit" class="btn btn-success mt-3 fw-bold" style="width: 100%;">Enroll</button>
                 </form>

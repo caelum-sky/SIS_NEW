@@ -28,10 +28,10 @@
                     </form>
                 </div>
 
-                <div class="table-responsive rounded-3 shadow-sm bg-white" 
+                <div class="table-responsive" 
                      style="height:a calc(100vh - 230px); overflow-y: auto;">
                     <table class="table table-striped table-bordered">
-                        <thead class="table-light text-white">
+                        <thead class=" text-white">
                             <tr>
                                 <th scope="col">Subject Code</th>
                                 <th scope="col">Subject Description</th>

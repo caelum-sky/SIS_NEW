@@ -9,9 +9,9 @@
             <div class="col-md-4"><div class="card text-center p-3"><div class="text-muted">Total Paid</div><div class="fs-4 fw-bold text-success">₱{{ number_format($summary['total_paid'], 2) }}</div></div></div>
             <div class="col-md-4"><div class="card text-center p-3"><div class="text-muted">Outstanding Balance</div><div class="fs-4 fw-bold text-danger">₱{{ number_format($summary['total_balance'], 2) }}</div></div></div>
         </div>
-        <div class="table-responsive bg-white rounded-3 shadow-sm">
+        <div class="table-responsive">
             <table class="table table-hover mb-0">
-                <thead class="table-light">
+                <thead class="">
                     <tr><th>Student</th><th>SY / Sem</th><th>Tuition</th><th>Fees</th><th>Scholarship</th><th>Paid</th><th>Balance</th><th>Status</th></tr>
                 </thead>
                 <tbody>

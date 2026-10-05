@@ -5,9 +5,9 @@
     <div class="content-wrapper">
         <h3 class="text-white fw-bold mb-4">Attendance Management</h3>
         <p class="text-muted mb-3">Teachers log daily attendance, tardiness, and absences per subject.</p>
-        <div class="table-responsive bg-white rounded-3 shadow-sm">
+        <div class="table-responsive">
             <table class="table table-hover mb-0">
-                <thead class="table-light">
+                <thead class="">
                     <tr><th>Date</th><th>Student</th><th>Subject</th><th>Status</th><th>Recorded By</th><th>Remarks</th></tr>
                 </thead>
                 <tbody>
