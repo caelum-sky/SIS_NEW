@@ -19,9 +19,9 @@ $(document).ready(function () {
                 let subjects = data.subjects;
                 subjects.forEach(function (subject) {
                     $("#subjectsList").append(`
-                        <div class="form-check d-flex align-items-center gap-2 p-2 border-bottom">
-                            <input type="checkbox" name="subjects[]" value="${subject.id}" id="subject-${subject.id}" class="form-check-input mt-0">
-                            <label class="form-check-label mb-0" for="subject-${subject.id}">
+                        <div class="d-flex align-items-center gap-2 p-2 border-bottom">
+                            <input type="checkbox" name="subjects[]" value="${subject.id}" id="subject-${subject.id}" style="width:1.15em;height:1.15em;accent-color:#3B82F6;flex-shrink:0;cursor:pointer;">
+                            <label class="mb-0" for="subject-${subject.id}" style="cursor:pointer;">
                                 ${subject.code} - ${subject.name}
                             </label>
                         </div>
