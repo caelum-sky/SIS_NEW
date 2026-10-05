@@ -51,12 +51,24 @@
                 <h1 class="h6 m-0 d-none d-md-block" style="color:var(--text-1);font-weight:700;">@yield('title')</h1>
                 <div class="topbar-actions">
                     <button class="icon-btn" aria-label="Notifications"><i class="bi bi-bell"></i></button>
-                    <div class="user-chip">
-                        <span class="avatar">{{ strtoupper(substr(auth('student')->user()->name, 0, 1)) }}</span>
-                        <span class="d-none d-sm-block">
-                            <span class="name">{{ auth('student')->user()->name }}</span><br>
-                            <span class="role">Student</span>
-                        </span>
+                    <div class="dropdown">
+                        <button type="button" class="user-chip dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="cursor:pointer;border:1px solid var(--border-soft);background:var(--surface-2);color:inherit;font-family:inherit;">
+                            <span class="avatar">{{ strtoupper(substr(auth('student')->user()->name, 0, 1)) }}</span>
+                            <span class="d-none d-sm-block">
+                                <span class="name">{{ auth('student')->user()->name }}</span><br>
+                                <span class="role">Student</span>
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:12px;">
+                            <li><a class="dropdown-item" href="{{ route('student.profile.edit') }}" style="color:var(--text-2);"><i class="bi bi-gear"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider" style="border-color:var(--border-soft);"></li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item" style="color:#F87171;"><i class="bi bi-box-arrow-right"></i> Logout</button>
+                                </form>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </header>

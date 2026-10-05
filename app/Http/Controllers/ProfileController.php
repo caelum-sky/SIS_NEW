@@ -29,6 +29,16 @@ class ProfileController extends Controller
         $user = auth('web')->user();
         $validated = $request->validated();
 
+        unset($validated['avatar']);
+
+        // Vercel's disk is read-only/ephemeral, so persist the photo as a
+        // base64 data URI in the users table instead of the filesystem.
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $data = base64_encode(file_get_contents($file->getRealPath()));
+            $user->profile_photo = 'data:'.$file->getMimeType().';base64,'.$data;
+        }
+
         if ($request->filled('password')) {
             $validated['password'] = Hash::make($request->string('password')->toString());
         }

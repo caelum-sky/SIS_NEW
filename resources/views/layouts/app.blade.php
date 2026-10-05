@@ -45,12 +45,30 @@
                 <button class="icon-btn mobile-nav-toggle" id="sidebarToggle" aria-label="Toggle navigation"><i class="bi bi-list"></i></button>
                 <button class="icon-btn d-none d-md-inline-grid" id="collapseToggle" aria-label="Collapse sidebar"><i class="bi bi-layout-sidebar"></i></button>
                 <div class="topbar-actions">
-                    <div class="user-chip">
-                        <span class="avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
-                        <span class="d-none d-sm-block">
-                            <span class="name">{{ auth()->user()->name }}</span><br>
-                            <span class="role">Administrator</span>
-                        </span>
+                    <div class="dropdown">
+                        <button type="button" class="user-chip dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="cursor:pointer;border:1px solid var(--border-soft);background:var(--surface-2);color:inherit;font-family:inherit;">
+                            <span class="avatar">
+                                @if(auth()->user()->profile_photo)
+                                    <img src="{{ auth()->user()->profile_photo }}" alt="Profile photo" style="width:32px;height:32px;border-radius:9px;object-fit:cover;">
+                                @else
+                                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                @endif
+                            </span>
+                            <span class="d-none d-sm-block">
+                                <span class="name">{{ auth()->user()->name }}</span><br>
+                                <span class="role">Administrator</span>
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" style="background:var(--surface-2);border:1px solid var(--border-soft);border-radius:12px;">
+                            <li><a class="dropdown-item" href="{{ route('profile.edit') }}" style="color:var(--text-2);"><i class="bi bi-gear"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider" style="border-color:var(--border-soft);"></li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item" style="color:#F87171;"><i class="bi bi-box-arrow-right"></i> Logout</button>
+                                </form>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </header>

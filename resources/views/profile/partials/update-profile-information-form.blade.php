@@ -1,6 +1,22 @@
-<form method="POST" action="{{ route('profile.update') }}">
+<form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
     @csrf
     @method('PATCH')
+
+    <div class="mb-4 d-flex align-items-center gap-3">
+        <span class="avatar-preview" style="width:72px;height:72px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,#2563EB,#06B6D4);color:#fff;font-weight:800;font-size:1.6rem;overflow:hidden;flex-shrink:0;">
+            @if($user->profile_photo)
+                <img src="{{ $user->profile_photo }}" alt="Profile photo" style="width:100%;height:100%;object-fit:cover;">
+            @else
+                {{ strtoupper(substr($user->name, 0, 1)) }}
+            @endif
+        </span>
+        <div>
+            <label for="avatar" class="form-label fw-bold d-block">Profile Photo</label>
+            <input type="file" id="avatar" name="avatar" class="form-control rounded-3" accept="image/jpg,image/jpeg,image/png,image/webp">
+            <div class="form-text">JPG, PNG or WebP, up to 1 MB.</div>
+            @error('avatar')<div class="text-danger small">{{ $message }}</div>@enderror
+        </div>
+    </div>
 
     <div class="mb-4">
         <label for="name" class="form-label fw-bold">Name</label>
