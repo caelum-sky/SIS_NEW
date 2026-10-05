@@ -15,9 +15,11 @@ define('LARAVEL_START', microtime(true));
 
 // On serverless the single-channel log file can't be written; send logs to
 // stderr so they show up in the Vercel function logs.
-$_ENV['LOG_CHANNEL'] ??= 'stderr';
-$_SERVER['LOG_CHANNEL'] ??= 'stderr';
-putenv('LOG_CHANNEL=stderr');
+if (empty($_ENV['LOG_CHANNEL']) && empty($_SERVER['LOG_CHANNEL']) && getenv('LOG_CHANNEL') === false) {
+    $_ENV['LOG_CHANNEL'] = 'stderr';
+    $_SERVER['LOG_CHANNEL'] = 'stderr';
+    putenv('LOG_CHANNEL=stderr');
+}
 
 require __DIR__.'/../vendor/autoload.php';
 
