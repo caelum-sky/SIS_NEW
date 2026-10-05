@@ -13,6 +13,11 @@ foreach (['', '/app/public', '/framework', '/framework/cache', '/framework/sessi
 
 define('LARAVEL_START', microtime(true));
 
+// Production must never print PHP warnings/deprecations into the HTML
+// (invalid HTML and breaks rendering); errors still land in Vercel stderr logs.
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+ini_set('display_errors', '0');
+
 // On serverless the single-channel log file can't be written; send logs to
 // stderr so they show up in the Vercel function logs.
 if (empty($_ENV['LOG_CHANNEL']) && empty($_SERVER['LOG_CHANNEL']) && getenv('LOG_CHANNEL') === false) {
