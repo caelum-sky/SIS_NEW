@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="main-panel">
+    <h1 class="h3 text-white mt-3">My Grades</h1>
     <div class="content-wrapper">
         <div class="row">
             <div class="col-12">

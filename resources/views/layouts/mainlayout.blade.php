@@ -4,9 +4,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>@yield('title')</title>
+    <title>@yield('title', config('app.name'))</title>
+    @include('partials.seo')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
+    <style>
+        @media (max-width: 768px) {
+            .d-flex { flex-direction: column; }
+            .sidebar { width: 100% !important; min-height: auto !important; }
+            .sidebar .nav { flex-direction: row !important; flex-wrap: wrap; }
+            .sidebar .nav-item { margin: 0 .25rem !important; }
+        }
+    </style>
 </head>
 
 <body class="bg-dark">

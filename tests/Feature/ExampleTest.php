@@ -16,4 +16,18 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_sitemap_is_served_as_xml(): void
+    {
+        $response = $this->get('/sitemap.xml');
+
+        $response->assertOk();
+        $response->assertHeader('Content-Type', 'application/xml');
+        $this->assertStringContainsString('<urlset', $response->getContent());
+    }
+
+    public function test_login_page_renders(): void
+    {
+        $this->get('/login')->assertOk();
+    }
 }

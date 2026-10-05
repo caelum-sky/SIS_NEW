@@ -16,7 +16,8 @@ class ProfileController extends Controller
      */
     public function edit()
     {
-        $user = Auth::user();
+        $user = auth('web')->user();
+
         return view('profile.edit', compact('user'));
     }
 
@@ -25,7 +26,7 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request)
     {
-        $user = $request->user();
+        $user = auth('web')->user();
         $validated = $request->validated();
 
         if ($request->filled('password')) {

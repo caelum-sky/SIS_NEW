@@ -5,7 +5,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Student System</title>
+    <title>{{ config('app.school_name') }} — Student Information System</title>
+    <meta name="description" content="{{ config('app.school_name') }} Student Information System for students and administrators — enrollments, grades, requirements, attendance, and billing in one secure portal.">
+    <link rel="canonical" href="{{ url('/') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ config('app.school_name') }} — Student Information System">
+    <meta property="og:description" content="Secure student portal for enrollments, grades, requirements, and billing.">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:image" content="{{ asset('img/og-cover.png') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="robots" content="index, follow">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "{{ config('app.school_name') }}",
+        "url": "{{ url('/') }}",
+        "address": "{{ config('app.school_location') }}"
+    }
+    </script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -1221,19 +1239,23 @@
 </head>
 
 <body class="font-sans antialiased dark:bg-black dark:text-white/50">
-<img id="background" class="absolute inset-0 w-full h-full object-cover" src="2.png" alt="Laravel background" />
+<img id="background" class="absolute inset-0 w-full h-full object-cover" src="{{ asset('2.png') }}" alt="Campus background" />
     <div class="relative w-full h-screen">
-        
-        <div class="relative z-10 flex items-center justify-end p-6">
+        <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+            <h1 class="text-4xl md:text-6xl font-bold text-white drop-shadow-lg">{{ config('app.school_name') }}</h1>
+            <p class="mt-4 text-lg md:text-xl text-white/90 drop-shadow">Student Information System — enrollments, grades, requirements, and billing in one place.</p>
+            <div class="mt-6 flex gap-4">
+                <a href="{{ route('login') }}" class="px-6 py-3 rounded-md bg-white text-gray-900 font-semibold hover:bg-gray-200">Log in</a>
+            </div>
+        </div>
+
+        <div class="absolute top-0 right-0 z-10 flex items-center p-6">
             @if (Route::has('login'))
             <nav class="flex gap-4">
-                @auth
+                @auth('web')
                 <a href="{{ url('/dashboard') }}" class="text-white hover:text-gray-300">Dashboard</a>
-                @else
-                <a href="{{ route('login') }}" class="text-white hover:text-gray-300">Log in</a>
-                @if (Route::has('register'))
-                <a href="{{ route('register') }}" class="text-white hover:text-gray-300">Register</a>
-                @endif
+                @elseauth('student')
+                <a href="{{ route('student.dashboard') }}" class="text-white hover:text-gray-300">Student Portal</a>
                 @endauth
             </nav>
             @endif

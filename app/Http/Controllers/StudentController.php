@@ -22,7 +22,10 @@ class StudentController extends Controller
         return view('students.index', ['studentList' => $students]);
     }
 
-    public function create() {}
+    public function create()
+    {
+        return redirect()->route('students.index');
+    }
 
     public function store(StoreStudentRequest $request)
     {
@@ -51,7 +54,10 @@ class StudentController extends Controller
         return new StudentResource($student->load(['enrollments.subject', 'enrollments.grade']));
     }
 
-    public function edit(Student $student) {}
+    public function edit(Student $student)
+    {
+        return redirect()->route('students.index');
+    }
 
     public function update(UpdateStudentRequest $request, Student $student)
     {

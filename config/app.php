@@ -56,6 +56,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | School Identity & Billing Defaults
+    |--------------------------------------------------------------------------
+    */
+    'school_name' => env('SCHOOL_NAME', 'BUKIDNON STATE UNIVERSITY'),
+    'school_location' => env('SCHOOL_LOCATION', 'Malaybalay City, Bukidnon'),
+    'cor_tuition_rate_per_unit' => env('COR_TUITION_RATE_PER_UNIT', 350),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

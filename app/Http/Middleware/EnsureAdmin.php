@@ -14,6 +14,8 @@ class EnsureAdmin
             return redirect()->route('login');
         }
 
+        abort_unless(auth('web')->user()->isAdmin(), 403);
+
         return $next($request);
     }
 }

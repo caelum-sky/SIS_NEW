@@ -120,7 +120,7 @@
 <script>
     Swal.fire({
         title: "Validation Error",
-        html: "{!! implode('<br>', $errors->all()) !!}",
+        html: @json(implode('<br>', $errors->all())),
         icon: "error",
         confirmButtonText: "OK"
     });

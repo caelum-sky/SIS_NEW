@@ -9,25 +9,45 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RequirementSubmissionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentDashboardController;
+use App\Http\Controllers\StudentProfileController;
 use App\Http\Controllers\SubjectController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth:web', 'verified'])->name('dashboard');
+Route::get('/sitemap.xml', function () {
+    $urls = [
+        ['loc' => url('/'), 'changefreq' => 'weekly', 'priority' => '1.0'],
+        ['loc' => url('/login'), 'changefreq' => 'monthly', 'priority' => '0.5'],
+    ];
+
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL;
+    foreach ($urls as $u) {
+        $xml .= '<url><loc>' . e($u['loc']) . '</loc><changefreq>' . $u['changefreq'] . '</changefreq><priority>' . $u['priority'] . '</priority></url>' . PHP_EOL;
+    }
+    $xml .= '</urlset>';
+
+    return response($xml, 200)->header('Content-Type', 'application/xml');
+})->name('sitemap');
 
 Route::middleware(['auth:student'])->prefix('student')->name('student.')->group(function () {
     Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/profile', [StudentProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [StudentProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [StudentProfileController::class, 'updatePassword'])->name('profile.password');
     Route::get('/requirements', [RequirementSubmissionController::class, 'studentIndex'])->name('requirements.index');
     Route::post('/requirements', [RequirementSubmissionController::class, 'store'])->name('requirements.store');
     Route::get('/cor/download', [CorController::class, 'download'])->name('cor.download');
 });
 
-Route::middleware(['auth:web', 'verified'])->group(function () {
+Route::middleware(['auth:web', 'verified', 'admin'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
     Route::resource('/students', StudentController::class);
     Route::resource('/subjects', SubjectController::class);
     Route::resource('/grade', GradeController::class);
@@ -58,7 +78,9 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
         Route::get('/billing', [ModuleController::class, 'billing'])->name('billing');
         Route::get('/reports', [ModuleController::class, 'reports'])->name('reports');
     });
+});
 
+Route::middleware(['auth:web', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

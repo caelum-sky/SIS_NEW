@@ -84,7 +84,10 @@ class EnrollmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Enrollment $enrollment) {}
+    public function edit(Enrollment $enrollment)
+    {
+        return redirect()->route('enroll.index');
+    }
 
     /**
      * Update the specified resource in storage.

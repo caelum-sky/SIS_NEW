@@ -15,8 +15,13 @@ class CorController extends Controller
         $student ??= auth('student')->user();
         abort_unless($student, 403);
 
-        $schoolYear = $request->get('school_year', '2025-2026');
-        $semester = $request->get('semester', '1st Semester');
+        $validated = $request->validate([
+            'school_year' => ['nullable', 'string', 'max:20', 'regex:/^\d{4}-\d{4}$/'],
+            'semester' => ['nullable', 'string', 'max:20', 'in:1st Semester,2nd Semester,Summer'],
+        ]);
+
+        $schoolYear = $validated['school_year'] ?? '2025-2026';
+        $semester = $validated['semester'] ?? '1st Semester';
 
         $enrollments = Enrollment::query()
             ->where('student_id', $student->id)
@@ -42,7 +47,7 @@ class CorController extends Controller
             ->where('semester', $semester)
             ->first();
 
-        $tuitionRate = (float) env('COR_TUITION_RATE_PER_UNIT', 350);
+        $tuitionRate = (float) config('app.cor_tuition_rate_per_unit', 350);
         $tuitionFees = $billing?->tuition_amount ?? round($totalUnits * $tuitionRate, 2);
 
         $defaultOtherFees = [
@@ -77,8 +82,8 @@ class CorController extends Controller
             $paymentSchedule[0]['due'] = $billing->due_date->format('M d, Y');
         }
 
-        $schoolName = env('SCHOOL_NAME', 'BUKIDNON STATE UNIVERSITY');
-        $schoolLocation = env('SCHOOL_LOCATION', 'Malaybalay City, Bukidnon');
+        $schoolName = config('app.school_name', 'BUKIDNON STATE UNIVERSITY');
+        $schoolLocation = config('app.school_location', 'Malaybalay City, Bukidnon');
 
         $courseYear = trim(($student->course ?? 'N/A') . ' / Yr ' . ($student->year_level ?? '1'));
         $period = trim($semester . ' ' . $schoolYear);

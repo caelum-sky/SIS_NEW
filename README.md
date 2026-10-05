@@ -172,13 +172,14 @@ This creates all tables including:
 php artisan db:seed
 ```
 
-Creates one **admin user**:
+Creates one **admin user** and one **demo student**:
 
-| Field | Value |
-|-------|-------|
-| Name | Test User |
-| Email | `test@example.com` |
-| Password | `password` |
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | `admin@example.com` | `password` |
+| Student | `student@example.com` | `password` |
+
+> Public admin registration is disabled. New admin accounts must be created via the database seeder or directly in the database.
 
 #### Optional seeders (sample data)
 
@@ -216,7 +217,7 @@ Student requirement documents are stored on the `public` disk under `storage/app
 
 ### 10. Install and build frontend assets
 
-Required for the **login**, **register**, and **welcome** pages (Vite + Tailwind). Admin and student portals use Bootstrap via CDN and work without a build, but auth pages need compiled assets.
+Required for the **login** and **welcome** pages (Vite + Tailwind). Admin and student portals use Bootstrap via CDN and work without a build, but auth pages need compiled assets.
 
 ```powershell
 npm install
@@ -255,24 +256,26 @@ The system tries the `web` guard (admin) first, then the `student` guard. You ar
 
 | Item | Value |
 |------|-------|
-| Login | `test@example.com` / `password` (after `db:seed`) |
+| Login | `admin@example.com` / `password` (after `db:seed`) |
 | Dashboard | `/dashboard` |
 | Student list | `/students` |
 | Subject list | `/subjects` |
 | Interview calendar | `/admin/interviews` |
 | Requirements review | `/admin/requirements` |
 | Modules | `/modules/students`, `/modules/academic-history`, `/modules/admissions`, etc. |
+| Profile | `/profile` |
 
-You can also register a new admin at `/register`.
+Admin accounts cannot be created via a public registration page.
 
 ### Student portal
 
 | Item | Value |
 |------|-------|
-| Login | Any student `email` from the `students` table / `password` |
+| Login | `student@example.com` / `password` (after `db:seed`), or any student email from the `students` table |
 | Dashboard (grades) | `/student/dashboard` |
 | Requirements | `/student/requirements` |
 | COR download | `/student/cor/download` |
+| Profile (edit name, email, password) | `/student/profile` |
 
 > Use an email that exists in the `students` table, not `users`. Admin credentials will not log into the student portal.
 
@@ -387,7 +390,7 @@ Confirm `FILESYSTEM_DISK=local` and that `storage/app/public` is writable.
 
 ### Admin routes redirect to email verification
 
-The default seeded admin has `email_verified_at` set. If you register manually, verify the email or update the user in the database / Tinker.
+The default seeded admin has `email_verified_at` set. New admin users must be added via seeder or database — there is no public registration.
 
 ### `Class "DOMDocument" not found` (PDF errors)
 
@@ -424,3 +427,22 @@ chmod -R 775 storage bootstrap/cache
 ## License
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+## Security & Accounts
+- Public self-registration is disabled. No /register route or controller exists.
+- Admin accounts are created only via php artisan db:seed (ADMIN_EMAIL/ADMIN_PASSWORD env overrides) or the DB directly. The dmin middleware gates all admin routes behind users.is_admin = true.
+- Students log in from the same /login page; they are redirected to the student portal and can edit their name, email, and password at /student/profile.
+- Debug is off, HTTPS is forced in production, session data is per-user, and all admin mutations require the admin middleware.
+
+
+
+## Deploying to Vercel + Supabase
+
+1. Create a Supabase project, then grab the Postgres connection details (Database ? Settings ? Connection string, use the 'Session pooler' or direct host).
+2. In Vercel, import the Git repo. Set these Environment Variables:
+   - APP_NAME, APP_ENV=production, APP_KEY (run php artisan key:generate --show locally), APP_DEBUG=false`n   - APP_URL=https://your-app.vercel.app`n   - DB_CONNECTION=pgsql, DB_HOST, DB_PORT=5432, DB_DATABASE=postgres, DB_USERNAME, DB_PASSWORD, DB_SSLMODE=require (from Supabase)
+   - SESSION_SECURE_COOKIE=true, CACHE_STORE=database, QUEUE_CONNECTION=database, SESSION_DRIVER=database`n   - ADMIN_EMAIL, ADMIN_PASSWORD (used when seeding)
+3. The ercel composer script runs config:cache, oute:cache, iew:cache, and migrate --force during build. After the first deploy, seed once with: php artisan db:seed --force run via a one-off command (e.g. ercel env pull + local run against Supabase).
+4. Static files under public/ are served directly; everything else routes through pi/index.php (the PHP serverless handler). Writable storage is redirected to /tmp for serverless compatibility.
+

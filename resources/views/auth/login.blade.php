@@ -1,5 +1,13 @@
 <x-guest-layout>
     <x-auth-session-status class="mb-4" :status="session('status')" />
+
+    <div class="mb-4 p-3 rounded-md bg-blue-50 dark:bg-gray-800 border border-blue-200 dark:border-gray-600">
+        <p class="text-sm text-gray-700 dark:text-gray-300">
+            <strong>Students and administrators</strong> use this page to sign in with their email and password.
+            Student accounts are created by the registrar — public registration is not available.
+        </p>
+    </div>
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
         <div>
@@ -35,8 +43,5 @@
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
-        <div class="flex items-center justify-end mt-4">
-        </div>
-        <a class=" text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 rounded-md dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="/register">Dont have an account yet? Register here</a>
     </form>
 </x-guest-layout>

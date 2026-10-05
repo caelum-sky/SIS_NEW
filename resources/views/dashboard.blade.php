@@ -2,7 +2,8 @@
 @section('title', 'Dashboard')
 @section('content')
 <div class="main-panel">
-    
+    <h1 class="h3 text-white mt-4">Admin Dashboard</h1>
+
     <!-- Profile Information Section -->
     <div class="py-12">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
@@ -16,9 +17,8 @@
                     
                     <!-- Profile Image -->
                     <div class="d-flex justify-content-center mb-4">
-                        <img src="{{ asset('img/1.png') }}" 
-                            
-                             class="rounded-circle shadow-sm" 
+                        <img src="{{ asset('img/1.png') }}" alt="Admin profile photo"
+                             class="rounded-circle shadow-sm"
                              width="120" height="120">
                     </div>
 
