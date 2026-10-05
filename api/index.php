@@ -42,9 +42,12 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 
 $app->useStoragePath($storagePath);
 
-// Vercel terminates TLS at the edge, but APP_URL may still say http://.
+// Vercel terminates TLS at the edge, but the request may still look like http.
 // Override the canonical URL env before config load so assets/routes are https.
 if (! empty($_SERVER['VERCEL']) || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https' || ($_SERVER['HTTPS'] ?? '') === 'on') {
+    $_SERVER['REQUEST_SCHEME'] = 'https';
+    $_SERVER['HTTPS'] = 'on';
+    $_SERVER['SERVER_PORT'] = 443;
     $host = $_SERVER['HTTP_HOST'] ?? '';
     if ($host !== '') {
         $_ENV['APP_URL'] = 'https://'.$host;
