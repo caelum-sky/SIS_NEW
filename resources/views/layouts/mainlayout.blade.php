@@ -64,7 +64,7 @@
                 <h1 class="h6 m-0 d-none d-md-block" style="color:var(--text-1);font-weight:700;">@yield('title')</h1>
                 <div class="topbar-search">
                     <i class="bi bi-search"></i>
-                    <input type="search" placeholder="Search students, subjects, reports..." aria-label="Search">
+                    <input type="search" name="search" placeholder="Search students, subjects, reports..." aria-label="Search">
                 </div>
                 <div class="topbar-actions">
                     <button class="icon-btn" aria-label="Notifications"><i class="bi bi-bell"></i></button>
