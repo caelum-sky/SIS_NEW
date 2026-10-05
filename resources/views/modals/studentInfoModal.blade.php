@@ -16,10 +16,10 @@
                         <p class="fw-bold mb-1">Course: <span id="student_address" class="fw-normal ms-2"> </span></p>
                     </div>
                     <div>
-                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#triggerGradesModal" type="btn">View Grades</button>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#triggerGradesModal" type="button">View Grades</button>
                     </div>
                 </div>
-                <div class="border rounded-3 p-3" style="max-height: 500px; overflow-y:scroll; scrollbar-width:none">
+                <div class="border rounded-3 p-3" style="max-height: 500px; overflow-y:auto; scrollbar-width:none">
                     <table class="table table-striped">
                         <colGroup>
                             <col width="10%">

@@ -19,12 +19,12 @@ $(document).ready(function () {
                 let subjects = data.subjects;
                 subjects.forEach(function (subject) {
                     $("#subjectsList").append(`
-                        <label class="form-check d-flex align-items-center p-3 border cursor-pointer" for="subject-${subject.id}"  style="cursor: pointer;" >
-                            <input  type="checkbox" name="subjects[]" value="${subject.id}" id="subject-${subject.id}" style="transform: scale(1.5); accent-color: blue; ">
-                             <label class="form-check-label" for="subject-${subject.id}">
-                              ${subject.code} - ${subject.name}
-                             </label>
-                        </label>
+                        <div class="form-check d-flex align-items-center gap-2 p-2 border-bottom">
+                            <input type="checkbox" name="subjects[]" value="${subject.id}" id="subject-${subject.id}" class="form-check-input mt-0">
+                            <label class="form-check-label mb-0" for="subject-${subject.id}">
+                                ${subject.code} - ${subject.name}
+                            </label>
+                        </div>
                     `);
                 });
             },

@@ -17,7 +17,7 @@
                         <p class="fw-bold mb-1">Course: <span id="sAddress" class="fw-normal ms-2"></span></p>
                     </div>
                 </div>
-                <div class="border rounded-3 p-3" style="max-height: 500px; overflow-y:scroll; scrollbar-width:none">
+                <div class="border rounded-3 p-3" style="max-height: 500px; overflow-y:auto; scrollbar-width:none">
                     <table class="table table-striped">
                         <colGroup>
                             <col width="10%">
