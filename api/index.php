@@ -33,6 +33,20 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 
 $app->useStoragePath($storagePath);
 
+// Blade looks for its compiled views under storage_path(); after we moved
+// storage to /tmp, point it at the deployment's pre-compiled views (from
+// `php artisan view:cache` at build time), which are read-only.
+$deployedViews = __DIR__.'/../storage/framework/views';
+if (is_dir($deployedViews)) {
+    $app['config']->set('view.compiled', $deployedViews);
+}
+
+// Also make /tmp's own compiled-views dir writable for Blade (cache fallback).
+
+if (! is_dir($storagePath.'/framework/views')) {
+    @mkdir($storagePath.'/framework/views', 0777, true);
+}
+
 // Vercel terminates TLS at the edge, but APP_URL may still say http://.
 // Force https:// URLs/routes so the browser doesn't get mixed-content warnings.
 if (! empty($_SERVER['VERCEL']) || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https' || ($_SERVER['HTTPS'] ?? '') === 'on') {
