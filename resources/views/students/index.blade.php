@@ -21,15 +21,52 @@
     </button>
 </div>
 
+<form method="GET" action="{{ route('students.index') }}" class="card p-3 mb-4 anim-in">
+    <div class="row g-2 align-items-center">
+        <div class="col-md-5">
+            <div class="topbar-search" style="max-width:none;flex:1;">
+                <i class="bi bi-search"></i>
+                <input type="search" name="search" value="{{ request('search') }}" placeholder="Search by name, email or student ID...">
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <select name="course" class="form-select">
+                <option value="">All courses</option>
+                @foreach($courses as $course)
+                    <option value="{{ $course }}" @selected(request('course') === $course)>{{ $course }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-6 col-md-2">
+            <select name="status" class="form-select">
+                <option value="">All statuses</option>
+                @foreach(['active' => 'Active', 'pending' => 'Pending', 'inactive' => 'Inactive', 'first_time' => 'First-time'] as $value => $label)
+                    <option value="{{ $value }}" @selected(request('status') === $value)>{{ $label }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-6 col-md-2">
+            <select name="sort" class="form-select">
+                <option value="">Name A–Z</option>
+                <option value="name_desc" @selected(request('sort') === 'name_desc')>Name Z–A</option>
+            </select>
+        </div>
+        <div class="col-6 col-md-1 d-grid">
+            <button class="btn btn-primary" type="submit"><i class="bi bi-funnel"></i></button>
+        </div>
+    </div>
+</form>
+
 <div class="table-responsive anim-in">
     <table class="table table-hover mb-0">
         <thead>
             <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Name</th>
+                <th scope="col">Student</th>
+                <th scope="col">Student ID</th>
                 <th scope="col">Email</th>
-                <th scope="col">Address</th>
                 <th scope="col">Course</th>
+                <th scope="col">Section</th>
+                <th scope="col">Status</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -41,11 +78,23 @@
                 data-name="{{$students->name}}"
                 data-email="{{$students->email}}"
                 data-course="{{$students->course}}">
-                <td>{{ $students->id }}</td>
-                <td>{{ $students->name }}</td>
+                <td>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="avatar" style="width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#2563EB,#06B6D4);display:grid;place-items:center;color:#fff;font-weight:700;font-size:.75rem;">{{ strtoupper(substr($students->name, 0, 1)) }}</span>
+                        <span>{{ $students->name }}</span>
+                    </div>
+                </td>
+                <td>{{ $students->student_number ?? '—' }}</td>
                 <td>{{ $students->email }}</td>
-                <td>{{ $students->address }}</td>
                 <td>{{ $students->course }}</td>
+                <td>{{ $students->section ?? '—' }}</td>
+                <td>
+                    @php
+                        $st = strtolower((string) ($students->enrollment_status ?? 'pending'));
+                        $cls = $st === 'active' || $st === 'enrolled' ? 'success' : ($st === 'inactive' ? 'danger' : 'warning');
+                    @endphp
+                    <span class="badge bg-{{ $cls }}">{{ $students->enrollment_status ?? 'Pending' }}</span>
+                </td>
                 <td class="d-flex gap-3">
                     <a href="#"
                         class="text-success"
@@ -90,11 +139,13 @@
                 </td>
             </tr>
             @empty
-            <tr><td colspan="6" class="text-center text-muted py-4">No students found.</td></tr>
+            <tr><td colspan="7" class="text-center text-muted py-4">No students found. Try changing your filters or add a new student.</td></tr>
             @endforelse
         </tbody>
     </table>
 </div>
+
+<div class="mt-3">{{ $studentList->links() }}</div>
 
 <script>
     function highlightRow(element) {

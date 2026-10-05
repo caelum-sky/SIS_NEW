@@ -26,10 +26,10 @@
 
             <div class="nav-section">Portal</div>
             <nav class="app-nav">
-                <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('student.dashboard') ? 'active' : '' }}"><i class="bi bi-grid-1x2"></i> My Grades</a>
-                <a href="{{ route('student.requirements.index') }}" class="{{ request()->routeIs('student.requirements.*') ? 'active' : '' }}"><i class="bi bi-file-earmark-arrow-up"></i> Requirements</a>
-                <a href="{{ route('student.cor.download') }}"><i class="bi bi-file-pdf"></i> Download COR</a>
-                <a href="{{ route('student.profile.edit') }}" class="{{ request()->routeIs('student.profile.*') ? 'active' : '' }}"><i class="bi bi-person-circle"></i> My Profile</a>
+                <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('student.dashboard') ? 'active' : '' }}" data-title="My Grades"><i class="bi bi-grid-1x2"></i> <span>My Grades</span></a>
+                <a href="{{ route('student.requirements.index') }}" class="{{ request()->routeIs('student.requirements.*') ? 'active' : '' }}" data-title="Requirements"><i class="bi bi-file-earmark-arrow-up"></i> <span>Requirements</span></a>
+                <a href="{{ route('student.cor.download') }}"><i class="bi bi-file-pdf"></i> <span>Download COR</span></a>
+                <a href="{{ route('student.profile.edit') }}" class="{{ request()->routeIs('student.profile.*') ? 'active' : '' }}" data-title="My Profile"><i class="bi bi-person-circle"></i> <span>My Profile</span></a>
             </nav>
 
             <div class="sidebar-foot">
@@ -37,7 +37,7 @@
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="w-100 text-start" style="background:none;border:none;padding:.55rem .75rem;border-radius:10px;color:var(--text-3);font-weight:500;font-size:.9rem;display:flex;align-items:center;gap:.7rem;">
-                            <i class="bi bi-box-arrow-right" style="width:20px;text-align:center;"></i> Logout
+                            <i class="bi bi-box-arrow-right" style="width:20px;text-align:center;"></i> <span class="logout-label">Logout</span>
                         </button>
                     </form>
                 </nav>
@@ -47,6 +47,7 @@
         <div class="app-main">
             <header class="app-topbar">
                 <button class="icon-btn mobile-nav-toggle" id="sidebarToggle" aria-label="Toggle navigation"><i class="bi bi-list"></i></button>
+                <button class="icon-btn d-none d-md-inline-grid" id="collapseToggle" aria-label="Collapse sidebar"><i class="bi bi-layout-sidebar"></i></button>
                 <h1 class="h6 m-0 d-none d-md-block" style="color:var(--text-1);font-weight:700;">@yield('title')</h1>
                 <div class="topbar-actions">
                     <button class="icon-btn" aria-label="Notifications"><i class="bi bi-bell"></i></button>
@@ -71,6 +72,14 @@
             var toggle = document.getElementById('sidebarToggle');
             var sidebar = document.getElementById('appSidebar');
             var backdrop = document.getElementById('sidebarBackdrop');
+            var collapse = document.getElementById('collapseToggle');
+            if (collapse) {
+                if (localStorage.getItem('sidebar-collapsed') === '1') sidebar.classList.add('collapsed');
+                collapse.addEventListener('click', function () {
+                    sidebar.classList.toggle('collapsed');
+                    localStorage.setItem('sidebar-collapsed', sidebar.classList.contains('collapsed') ? '1' : '0');
+                });
+            }
             function close() { sidebar.classList.remove('open'); backdrop.classList.remove('open'); }
             if (toggle) toggle.addEventListener('click', function () {
                 sidebar.classList.toggle('open'); backdrop.classList.toggle('open');

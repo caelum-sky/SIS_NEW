@@ -16,10 +16,22 @@ class StudentController extends Controller
     {
         $students = Student::query()
             ->withCount('enrollments')
-            ->orderBy('name')
-            ->get();
+            ->when(request('search'), function ($q, $search) {
+                $q->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%")
+                      ->orWhere('student_number', 'like', "%{$search}%");
+                });
+            })
+            ->when(request('course'), fn ($q, $course) => $q->where('course', $course))
+            ->when(request('status'), fn ($q, $status) => $q->where('enrollment_status', $status))
+            ->when(request('sort') === 'name_desc', fn ($q) => $q->orderBy('name', 'desc'), fn ($q) => $q->orderBy('name'))
+            ->paginate(12)
+            ->withQueryString();
 
-        return view('students.index', ['studentList' => $students]);
+        $courses = Student::query()->whereNotNull('course')->distinct()->orderBy('course')->pluck('course');
+
+        return view('students.index', ['studentList' => $students, 'courses' => $courses]);
     }
 
     public function create()

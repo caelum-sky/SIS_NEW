@@ -24,17 +24,17 @@
             </a>
             <div class="nav-section">Main</div>
             <nav class="app-nav">
-                <a href="{{ route('dashboard') }}"><i class="bi bi-grid-1x2"></i> Dashboard</a>
-                <a href="{{ route('students.index') }}"><i class="bi bi-people"></i> Students</a>
-                <a href="{{ route('subjects.index') }}"><i class="bi bi-book"></i> Subjects</a>
-                <a href="{{ route('profile.edit') }}" class="active"><i class="bi bi-gear"></i> Settings</a>
+                <a href="{{ route('dashboard') }}"><i class="bi bi-grid-1x2"></i> <span>Dashboard</span></a>
+                <a href="{{ route('students.index') }}"><i class="bi bi-people"></i> <span>Students</span></a>
+                <a href="{{ route('subjects.index') }}"><i class="bi bi-book"></i> <span>Subjects</span></a>
+                <a href="{{ route('profile.edit') }}" class="active" data-title="Settings"><i class="bi bi-gear"></i> <span>Settings</span></a>
             </nav>
             <div class="sidebar-foot">
                 <nav class="app-nav">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" style="background:none;border:none;padding:.55rem .75rem;border-radius:10px;color:var(--text-3);font-weight:500;font-size:.9rem;display:flex;align-items:center;gap:.7rem;width:100%;text-align:left;">
-                            <i class="bi bi-box-arrow-right" style="width:20px;text-align:center;"></i> Logout
+                            <i class="bi bi-box-arrow-right" style="width:20px;text-align:center;"></i> <span class="logout-label">Logout</span>
                         </button>
                     </form>
                 </nav>
@@ -43,6 +43,7 @@
         <div class="app-main">
             <header class="app-topbar">
                 <button class="icon-btn mobile-nav-toggle" id="sidebarToggle" aria-label="Toggle navigation"><i class="bi bi-list"></i></button>
+                <button class="icon-btn d-none d-md-inline-grid" id="collapseToggle" aria-label="Collapse sidebar"><i class="bi bi-layout-sidebar"></i></button>
                 <div class="topbar-actions">
                     <div class="user-chip">
                         <span class="avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
@@ -62,6 +63,11 @@
             function c(){s.classList.remove('open');b.classList.remove('open');}
             if(t)t.addEventListener('click',function(){s.classList.toggle('open');b.classList.toggle('open');});
             if(b)b.addEventListener('click',c);
+            var cl = document.getElementById('collapseToggle');
+            if(cl){
+                if(localStorage.getItem('sidebar-collapsed')==='1')s.classList.add('collapsed');
+                cl.addEventListener('click',function(){s.classList.toggle('collapsed');localStorage.setItem('sidebar-collapsed',s.classList.contains('collapsed')?'1':'0');});
+            }
         })();
     </script>
 </body>
