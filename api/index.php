@@ -37,6 +37,23 @@ if (empty($_ENV['LOG_CHANNEL']) && empty($_SERVER['LOG_CHANNEL']) && getenv('LOG
 
 require __DIR__.'/../vendor/autoload.php';
 
+// Serve real static files from public/ directly (Vite build output, images,
+// css/js, etc.). The serverless function is the only entrypoint in this
+// setup, so without this every asset falls through to Laravel and 404s.
+$publicPath = realpath(__DIR__.'/../public');
+$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+if ($requestPath !== '/' && $publicPath !== false) {
+    $file = realpath($publicPath.$requestPath);
+    if ($file !== false && is_file($file) && str_starts_with($file, $publicPath)) {
+        $mime = function_exists('mime_content_type') ? mime_content_type($file) : false;
+        header('Content-Type: '.($mime ?: 'application/octet-stream'));
+        // Vite-built assets are content-hashed; everything else gets a short cache.
+        header('Cache-Control: '.(str_starts_with($requestPath, '/build/') ? 'public, max-age=31536000, immutable' : 'public, max-age=3600'));
+        readfile($file);
+        exit;
+    }
+}
+
 /** @var Application $app */
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
