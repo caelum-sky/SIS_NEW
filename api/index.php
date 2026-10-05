@@ -45,8 +45,30 @@ $requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 if ($requestPath !== '/' && $publicPath !== false) {
     $file = realpath($publicPath.$requestPath);
     if ($file !== false && is_file($file) && str_starts_with($file, $publicPath)) {
-        $mime = function_exists('mime_content_type') ? mime_content_type($file) : false;
-        header('Content-Type: '.($mime ?: 'application/octet-stream'));
+        // mime_content_type is unreliable on the Vercel PHP runtime (it
+        // returned text/plain, which browsers refuse for stylesheets), so
+        // map the types we actually serve explicitly.
+        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+        $types = [
+            'css' => 'text/css',
+            'js' => 'application/javascript',
+            'mjs' => 'application/javascript',
+            'json' => 'application/json',
+            'png' => 'image/png',
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'gif' => 'image/gif',
+            'svg' => 'image/svg+xml',
+            'ico' => 'image/x-icon',
+            'webp' => 'image/webp',
+            'woff' => 'font/woff',
+            'woff2' => 'font/woff2',
+            'ttf' => 'font/ttf',
+            'map' => 'application/json',
+            'txt' => 'text/plain',
+            'html' => 'text/html',
+        ];
+        header('Content-Type: '.($types[$ext] ?? 'application/octet-stream'));
         // Vite-built assets are content-hashed; everything else gets a short cache.
         header('Cache-Control: '.(str_starts_with($requestPath, '/build/') ? 'public, max-age=31536000, immutable' : 'public, max-age=3600'));
         readfile($file);
