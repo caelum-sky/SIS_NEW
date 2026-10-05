@@ -70,7 +70,7 @@ if ($requestPath !== '/' && $publicPath !== false) {
         ];
         header('Content-Type: '.($types[$ext] ?? 'application/octet-stream'));
         // Vite-built assets are content-hashed; everything else gets a short cache.
-        header('Cache-Control: '.(str_starts_with($requestPath, '/build/') ? 'public, max-age=31536000, immutable' : 'public, max-age=3600'));
+        header('Cache-Control: '.(str_starts_with($requestPath, '/build/') ? 'public, max-age=31536000, immutable' : 'no-cache'));
         readfile($file);
         exit;
     }
